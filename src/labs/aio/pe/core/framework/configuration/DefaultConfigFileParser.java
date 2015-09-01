@@ -63,10 +63,15 @@ public class DefaultConfigFileParser implements ConfigFileParser {
 	}
 	
 	private class DefaultConfigFileLineParser implements ConfigFileLineParser {
+		private static final String REGEXP = "(.*):(.*)";
 		@Override
 		public Line parseLine (String input) {
-			String[] data = input.split(":");
-			Line line = new Line (data[0], data[1]);
+			Pattern pattern = Pattern.compile (REGEXP);
+			Matcher matcher = pattern.matcher (input);
+			Line line = null;
+			if (matcher.matches()) {
+				line = new Line (matcher.group(1), matcher.group(2));
+			}
 			return line;
 		}
 	}
